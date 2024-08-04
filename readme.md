@@ -64,7 +64,17 @@ DESCRIPTION: Return the response object containing the  result for next number i
 
 ## Live Deployment
 
-This microservice is currently deployed on 
+This microservice is currently deployed on AWS EC2 (t2 micro):
+
+### Live Endpoints
+
+#### getFizzBuzzForSequence
+
+http://35.183.144.73:8080/api/v1/getFizzBuzzForSequence
+
+#### getNextInSequence
+
+http://35.183.144.73:8080/api/v1/getNextInSequence
 
 
 ### Sample Responses
