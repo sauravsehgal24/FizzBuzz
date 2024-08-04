@@ -77,7 +77,9 @@ http://35.183.144.73:8080/api/v1/getFizzBuzzForSequence
 http://35.183.144.73:8080/api/v1/getNextInSequence
 
 
-### Sample Responses
+
+
+## Sample Responses
 
 #### getFizzBuzzForSequence
 
