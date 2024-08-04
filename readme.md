@@ -16,8 +16,6 @@ Classic children’s game “Fizz buzz”. This is a microservice which loops th
 
 ## API Reference
 
-#### Get the result response for sequence of 1-100 based on multiple of 5 or 3
-
 ```http
   GET /api/v1/getFizzBuzzForSequence
 ```
