@@ -2,6 +2,7 @@ package com.fizzbuzz.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fizzbuzz.enums.FizzBuzzResponseKey;
 import com.fizzbuzz.services.FizzBuzzService;
 
 import java.util.HashMap;
@@ -10,40 +11,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
+@RequestMapping("/api/v1")
 public class FizzbuzzController {
 
     @Autowired
     FizzBuzzService fizzBuzzService;
     
+    /**
+     * GET - get the result response for sequence of 1-100 based on multiple of 5 or 3
+     * @return response object containing result, message, http code
+     * @author saurav sehgal
+     */
     @GetMapping("/getFizzBuzzForSequence")    
     public ResponseEntity<Object> getFizzBuzzForSequence(){
-        // default response object
-        HashMap<String,Object> responseObject = new HashMap<>();
-        responseObject.put("message","Internal Error Processing the Sequence");
-        responseObject.put("httpStatusCode",HttpStatus.INTERNAL_SERVER_ERROR);
-        responseObject.put("result",null);
 
         //process the sequence 1-100
-        fizzBuzzService.processFizzBuzzForSequence(responseObject);
-
+        HashMap<FizzBuzzResponseKey,Object> responseResult = fizzBuzzService.processFizzBuzzForSequence();
+        
         //return response for 1-100
-        return new ResponseEntity<>(responseObject, (HttpStatus)responseObject.get("httpStatusCode"));
-
+        return new ResponseEntity<>(responseResult, (HttpStatus)responseResult.get(FizzBuzzResponseKey.httpStatusCode));
     }
 
+     /**
+     * GET - get the result response for next number in sequence of 1-100 based on multiple of 5 or 3
+     * @return response object containing result, message, http code
+     * @author saurav sehgal
+     */
     @GetMapping("/getNextInSequence")
     public ResponseEntity<Object> getNextResultFromSequence() {
-        // default response object
-        HashMap<String,Object> responseObject = new HashMap<>();
-        responseObject.put("message","Internal Error Processing next value!");
-        responseObject.put("httpStatusCode",HttpStatus.INTERNAL_SERVER_ERROR);
-        responseObject.put("result",null);
 
-        fizzBuzzService.processNextNumInSequence(responseObject);
+        // process the next number in sequence
+        HashMap<FizzBuzzResponseKey,Object> responseResult = fizzBuzzService.processNextNumInSequence();
 
-        return new ResponseEntity<>(responseObject, (HttpStatus)responseObject.get("httpStatusCode"));
+        //return response for next number in sequence
+        return new ResponseEntity<>(responseResult, (HttpStatus)responseResult.get(FizzBuzzResponseKey.httpStatusCode));
     }
     
 }
