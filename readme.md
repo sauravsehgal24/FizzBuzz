@@ -229,6 +229,6 @@ http://35.183.144.73:8080/api/v1/getNextInSequence
   GET /api/v1/reset
 ```
 
-```json 
+```
 Successfuly reseted the sequence to start from 1
 ```
