@@ -1,7 +1,7 @@
 
 # FizzBuzz App
 
-Classic children’s game “Fizz buzz”. This is a microservice which loops through a sequence of numbers ranging from 1-100 and prints the following result:
+Classic children’s game “Fizz buzz”. This is a microservice which prints the following result:
 
 - if a number is multiple of 3 then print "Fizz"
 - if a number is multiple of 5 then print "Buzz"
@@ -28,10 +28,9 @@ Classic children’s game “Fizz buzz”. This is a microservice which loops th
 
 DESCRIPTION: Return the response object containing the array of result for all the numbers in 1-100 
 
-#### Get item
 
 ```http
-  GET /api/v1/getNextInSequence
+  GET /api/v1/next
 ```
 
 | Parameter | Type     | Description                |
@@ -40,7 +39,20 @@ DESCRIPTION: Return the response object containing the array of result for all t
 
 [Sample Response Object](#getNextInSequence)
 
-DESCRIPTION: Return the response object containing the  result for next number in 1-100 
+DESCRIPTION: Return the response object containing the result for next number in sequence
+
+
+```http
+  GET /api/v1/reset
+```
+
+| Parameter | Type     | Description                |
+| :-------- | :------- | :------------------------- |
+| `NULL`    | `N/A`    | N/A                        |
+
+[Sample Response Object](#reset)
+
+DESCRIPTION: Reset the sequence counter to start from 1
 
 
 ## Developer Documentation
@@ -53,11 +65,12 @@ DESCRIPTION: Return the response object containing the  result for next number i
 ### Local Setup
 - clone the project in your local: ```https://github.com/sauravsehgal24/FizzBuzz.git```
 - open the project in your preferred IDE (Note: I developed this project in VS Code)
-- install maven dependencies in your local maven repository: ```mvn clean install```
+- Navigate to root folder where pom.xml is located and install maven dependencies in your local maven repository: ```mvn clean install```
 - NOTE: the above command will also run the unit and E2E tests
 - Run the src/main/java/com/fizzbuzz/FizzBuzz.java file and make sure that the server is started on port 8080
-- Navigate to POSTMAN or your Browser and test the API: http://localhost:8080/api/v1/getFizzBuzzForSequence
-- Navigate to POSTMAN or your Browser and test the API: http://localhost:8080/api/v1/getNextInSequence
+- Navigate to POSTMAN or your Browser and test the API: GET http://localhost:8080/api/v1/getFizzBuzzForSequence
+- Navigate to POSTMAN or your Browser and test the API: GET http://localhost:8080/api/v1/next
+- Navigate to POSTMAN or your Browser and test the API: GET http://localhost:8080/api/v1/reset
 
 
 ## Live Deployment
@@ -197,7 +210,7 @@ http://35.183.144.73:8080/api/v1/getNextInSequence
 #### getNextInSequence
 
 ```http
-  GET /api/v1/getNextInSequence
+  GET /api/v1/next
 ```
 
 ```json 
@@ -208,4 +221,14 @@ http://35.183.144.73:8080/api/v1/getNextInSequence
     },
     "message": "Successfuly processed the number in sequence!"
 }
+```
+
+#### reset
+
+```http
+  GET /api/v1/reset
+```
+
+```json 
+Successfuly reseted the sequence to start from 1
 ```

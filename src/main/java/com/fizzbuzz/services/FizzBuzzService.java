@@ -1,15 +1,25 @@
 package com.fizzbuzz.services;
 
 import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.fizzbuzz.enums.FizzBuzzResponseKey;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Service
+@Setter
+@Getter
 public class FizzBuzzService {
 
-    private int nextNumberInSequence=0;
+    private static final Logger logger = LoggerFactory.getLogger(FizzBuzzService.class);
+
+    private int nextNumberInSequence=1;
 
     /**
      * loop through 1-100 and append result into response object.
@@ -30,10 +40,12 @@ public class FizzBuzzService {
         try{
             HashMap<Integer,String> resultMap = new HashMap<>();
             for (int i=1; i<=100; i++){
-                if(i % 3 == 0 && i % 5 == 0) resultMap.put(i, "FizzBuzz");
-                else if(i % 3 == 0) resultMap.put(i, "Fizz");
-                else if(i % 5 == 0) resultMap.put(i, "Buzz");
-                else resultMap.put(i, Integer.toString(i));
+                String result=i+"";
+                if(i % 3 == 0 && i % 5 == 0) result="FizzBuzz";
+                else if(i % 3 == 0) result="Fizz";
+                else if(i % 5 == 0) result="Buzz";
+                resultMap.put(i, result);
+                logger.info("Processed number "+i+" | Result = "+result);
             }
             responseObject.put(FizzBuzzResponseKey.result,resultMap);
             responseObject.put(FizzBuzzResponseKey.message,"Successfuly processed the sequence!");
@@ -41,7 +53,7 @@ public class FizzBuzzService {
         }
         // mimic some sort of exception and alter the response object, although its hard for program to raise exception in this logic
         catch(Exception e){
-            // if there is a logger, then add the exception to logger.error()
+            logger.error(e.getMessage());
             responseObject.put(FizzBuzzResponseKey.message,"Error Processing the Fizz Buzz Sequence!"); // error can be different based on exception
             responseObject.put(FizzBuzzResponseKey.httpStatusCode,HttpStatus.INTERNAL_SERVER_ERROR); // Code can be different based on the exception
         }
@@ -64,23 +76,21 @@ public class FizzBuzzService {
         responseObject.put(FizzBuzzResponseKey.httpStatusCode,HttpStatus.INTERNAL_SERVER_ERROR);
 
         try{
-            nextNumberInSequence++;
-            HashMap<Integer,String> result = new HashMap<>();
-            if(nextNumberInSequence == 101) nextNumberInSequence=1;
-            result.put(nextNumberInSequence,Integer.toString(nextNumberInSequence));
-            if(nextNumberInSequence % 3 == 0 && nextNumberInSequence % 5 == 0) result.put(nextNumberInSequence,"FizzBuzz");
-            else if(nextNumberInSequence % 3 == 0) result.put(nextNumberInSequence,"Fizz");
-            else if(nextNumberInSequence % 5 == 0) result.put(nextNumberInSequence,"Buzz");
-            responseObject.put(FizzBuzzResponseKey.result,result);
+            HashMap<Integer,String> resultMap = new HashMap<>();
+            String result = nextNumberInSequence+"";
+            if(nextNumberInSequence % 3 == 0 && nextNumberInSequence % 5 == 0) result="FizzBuzz";
+            else if(nextNumberInSequence % 3 == 0) result="Fizz";
+            else if(nextNumberInSequence % 5 == 0) result="Buzz";
+            resultMap.put(nextNumberInSequence, result);
+            responseObject.put(FizzBuzzResponseKey.result,resultMap);
             responseObject.put(FizzBuzzResponseKey.message,"Successfuly processed the number in sequence!");
             responseObject.put(FizzBuzzResponseKey.httpStatusCode,HttpStatus.OK);
+            logger.info("Processed number "+nextNumberInSequence+" | Result = "+result);
+            nextNumberInSequence++;
         }catch (Exception e){
-            // if there is a logger, then add the exception to logger.error()
+            logger.error(e.getMessage());
             responseObject.put(FizzBuzzResponseKey.message,"Error Processing the number: "+nextNumberInSequence); 
             responseObject.put(FizzBuzzResponseKey.httpStatusCode,HttpStatus.INTERNAL_SERVER_ERROR);
-
-            //revert to previous number
-            nextNumberInSequence--;
         }
         return responseObject;
     }

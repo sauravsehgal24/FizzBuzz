@@ -40,7 +40,7 @@ public class FizzbuzzController {
      * @return response object containing result, message, http code
      * @author saurav sehgal
      */
-    @GetMapping("/getNextInSequence")
+    @GetMapping("/next")
     public ResponseEntity<Object> getNextResultFromSequence() {
 
         // process the next number in sequence
@@ -49,5 +49,21 @@ public class FizzbuzzController {
         //return response for next number in sequence
         return new ResponseEntity<>(responseResult, (HttpStatus)responseResult.get(FizzBuzzResponseKey.httpStatusCode));
     }
+
+     /**
+     * GET - reset the sequence to 1
+     * @return response object containing result, message, http code
+     * @author saurav sehgal
+     */
+    @GetMapping("/reset")
+    public ResponseEntity<Object> resetSequence() {
+
+        // process the next number in sequence
+        fizzBuzzService.setNextNumberInSequence(1);
+
+        //return response for next number in sequence
+        return new ResponseEntity<>("Successfuly reseted the sequence to start from 1", HttpStatus.OK);
+    }
     
+    // create reset controller 
 }

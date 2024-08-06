@@ -1,5 +1,6 @@
 package com.fizzbuzz.integration;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -9,7 +10,13 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -20,6 +27,24 @@ public class FizzBuzzApiTest {
 
 	@Autowired
 	private TestRestTemplate restTemplate;
+
+     private final static String EXPECTED_RESULT_FILE = "src/test/resources/expectedResults.txt";
+
+    private static ArrayList<String> expectedResults = new ArrayList<>();
+
+    @BeforeAll
+    static void setExpectedResult(){
+        try(BufferedReader reader = new BufferedReader(new FileReader(EXPECTED_RESULT_FILE))){
+            String line="";
+            while((line = reader.readLine())!=null){
+                expectedResults.add(line);
+            }
+        }
+        catch(Exception e){
+            // fail the tests if any error in file reading
+            fail("FAILING all the tests due to following error: "+e.getMessage());
+        }
+    }
 
     @Test
 	void getFizzBuzzForSequenceTest(){
@@ -39,11 +64,7 @@ public class FizzBuzzApiTest {
 
         // assert the response result
         for(int i=1; i<=100; i++){
-            String expectedValue = Integer.toString(i);
-            if(i % 3 == 0 && i % 5 == 0) expectedValue="FizzBuzz";
-            else if(i % 3 == 0) expectedValue="Fizz";
-            else if(i % 5 == 0) expectedValue="Buzz";
-
+            String expectedValue = expectedResults.get(i-1);
             String actualValue = actualResult.get(i+"");
 
             assertNotNull(actualValue);
@@ -52,10 +73,10 @@ public class FizzBuzzApiTest {
 	}
 
     @Test
-	void getNextInSequence(){
+	void getNextInSequenceTest(){
         HashMap<String,Object> res = new HashMap<>();
         for(int i=1; i<=100; i++){
-            res = restTemplate.getForObject("http://localhost:" + port + "/api/v1/getNextInSequence", res.getClass());
+            res = restTemplate.getForObject("http://localhost:" + port + "/api/v1/next", res.getClass());
             // assert api response
             assertNotNull(res.get("message"));
             assertNotNull(res.get("httpStatusCode"));
@@ -68,15 +89,26 @@ public class FizzBuzzApiTest {
             assertEquals("Successfuly processed the number in sequence!",actualMessage);
             assertEquals("OK",actualHttpStatusCode);
 
-
-            String expectedValue = Integer.toString(i);
-            if(i % 3 == 0 && i % 5 == 0) expectedValue="FizzBuzz";
-            else if(i % 3 == 0) expectedValue="Fizz";
-            else if(i % 5 == 0) expectedValue="Buzz";
-
+            String expectedValue = expectedResults.get(i-1);
             String actualValue = actualResult.get(i+"");
             assertNotNull(actualValue);
             assertEquals(expectedValue, actualValue);
         }
+	}
+
+    @Test
+	void resetSequence(){
+        HashMap<String,Object> res = new HashMap<>();
+
+        // reset the sequence
+        restTemplate.getForObject("http://localhost:" + port + "/api/v1/reset", String.class);
+
+        // retrieve the result for current number in sequence 
+        res = restTemplate.getForObject("http://localhost:" + port + "/api/v1/next", res.getClass());
+        HashMap<String,String>  result = (HashMap<String,String>) res.get("result");
+
+        // assert that the current number in sequence is 1 
+        assertNotNull(result);
+        assertNotNull(result.get("1"));
 	}
 }
