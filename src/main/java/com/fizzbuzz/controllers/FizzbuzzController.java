@@ -5,6 +5,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fizzbuzz.enums.FizzBuzzResponseKey;
 import com.fizzbuzz.services.FizzBuzzService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +31,13 @@ public class FizzbuzzController {
      * @return response object containing result, message, http code
      * @author saurav sehgal
      */
+    @Operation(summary = "Get the result response for sequence of 1-100 based on multiple of 5 or 3")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfuly processed the sequence!",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
     @GetMapping("/getFizzBuzzForSequence")    
     public ResponseEntity<Object> getFizzBuzzForSequence(){
 
@@ -40,6 +53,13 @@ public class FizzbuzzController {
      * @return response object containing result, message, http code
      * @author saurav sehgal
      */
+    @Operation(summary = "Get the result response for next number in sequence of 1-100 based on multiple of 5 or 3")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfuly processed the number in sequence!",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
     @GetMapping("/next")
     public ResponseEntity<Object> getNextResultFromSequence() {
 
@@ -55,6 +75,13 @@ public class FizzbuzzController {
      * @return response object containing result, message, http code
      * @author saurav sehgal
      */
+    @Operation(summary = "Reset the sequence to 1")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfuly reseted the sequence to start from 1",
+                    content = { @Content(mediaType = "application/json") }),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
     @GetMapping("/reset")
     public ResponseEntity<Object> resetSequence() {
 
