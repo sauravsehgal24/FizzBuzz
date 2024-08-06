@@ -23,6 +23,9 @@ Classic children’s game “Fizz buzz”. This is a microservice which prints t
 - Any JVM supporting IDE (IntelliJ, VS Code etc.)
 
 ### Local Setup
+
+NOTE: If you are using intelliJ IDE then make sure that Project SDK is set to java 17 and lombok plugin is installed and annotations are enabled
+
 - clone the project in your local: ```https://github.com/sauravsehgal24/FizzBuzz.git```
 - open the project in your preferred IDE (Note: I developed this project in VS Code)
 - Navigate to root folder where pom.xml is located and install maven dependencies in your local maven repository: ```mvn clean install```
