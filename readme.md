@@ -48,7 +48,7 @@ http://35.183.144.73:8080/api/v1/getFizzBuzzForSequence
 
 #### getNextInSequence
 
-http://35.183.144.73:8080/api/v1/getNextInSequence
+http://35.183.144.73:8080/api/v1/next
 
 #### resetSequence
 
