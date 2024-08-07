@@ -10,7 +10,6 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -75,6 +74,7 @@ public class FizzBuzzApiTest {
     @Test
 	void getNextInSequenceTest(){
         HashMap<String,Object> res = new HashMap<>();
+        restTemplate.put("http://localhost:" + port + "/api/v1/reset", null);
         for(int i=1; i<=100; i++){
             res = restTemplate.getForObject("http://localhost:" + port + "/api/v1/next", res.getClass());
             // assert api response
@@ -97,11 +97,11 @@ public class FizzBuzzApiTest {
 	}
 
     @Test
-	void resetSequence(){
+	void resetSequenceTest(){
         HashMap<String,Object> res = new HashMap<>();
 
         // reset the sequence
-        restTemplate.getForObject("http://localhost:" + port + "/api/v1/reset", String.class);
+        restTemplate.put("http://localhost:" + port + "/api/v1/reset", null);
 
         // retrieve the result for current number in sequence 
         res = restTemplate.getForObject("http://localhost:" + port + "/api/v1/next", res.getClass());

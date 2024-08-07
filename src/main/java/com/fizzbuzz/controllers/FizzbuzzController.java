@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
@@ -82,7 +83,7 @@ public class FizzbuzzController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping("/reset")
+    @PutMapping("/reset")
     public ResponseEntity<Object> resetSequence() {
 
         // process the next number in sequence
@@ -91,6 +92,4 @@ public class FizzbuzzController {
         //return response for next number in sequence
         return new ResponseEntity<>("Successfuly reseted the sequence to start from 1", HttpStatus.OK);
     }
-    
-    // create reset controller 
 }
