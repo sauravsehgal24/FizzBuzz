@@ -35,6 +35,13 @@ NOTE: If you are using intelliJ IDE then make sure that Project SDK is set to ja
 - Navigate to POSTMAN or your Browser and test the API: GET http://localhost:8080/api/v1/next
 - Navigate to POSTMAN or your Browser and test the API: GET http://localhost:8080/api/v1/reset
 
+#### CLI Execution
+
+- Build the project via ```mvn clean install``` 
+- Navigate to target/ folder
+- locate the jar file
+- run the jar file via ```java -jar <JAR FILE NAME>.jar```
+
 
 ## Live Deployment
 
