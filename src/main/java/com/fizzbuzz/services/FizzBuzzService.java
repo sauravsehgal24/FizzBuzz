@@ -40,10 +40,7 @@ public class FizzBuzzService {
         try{
             HashMap<Integer,String> resultMap = new HashMap<>();
             for (int i=1; i<=100; i++){
-                String result=i+"";
-                if(i % 3 == 0 && i % 5 == 0) result="FizzBuzz";
-                else if(i % 3 == 0) result="Fizz";
-                else if(i % 5 == 0) result="Buzz";
+                String result=checkIsMultiple(i);
                 resultMap.put(i, result);
                 logger.info("Processed number "+i+" | Result = "+result);
             }
@@ -77,10 +74,7 @@ public class FizzBuzzService {
 
         try{
             HashMap<Integer,String> resultMap = new HashMap<>();
-            String result = nextNumberInSequence+"";
-            if(nextNumberInSequence % 3 == 0 && nextNumberInSequence % 5 == 0) result="FizzBuzz";
-            else if(nextNumberInSequence % 3 == 0) result="Fizz";
-            else if(nextNumberInSequence % 5 == 0) result="Buzz";
+            String result = checkIsMultiple(nextNumberInSequence);
             resultMap.put(nextNumberInSequence, result);
             responseObject.put(FizzBuzzResponseKey.result,resultMap);
             responseObject.put(FizzBuzzResponseKey.message,"Successfuly processed the number in sequence!");
@@ -93,5 +87,15 @@ public class FizzBuzzService {
             responseObject.put(FizzBuzzResponseKey.httpStatusCode,HttpStatus.INTERNAL_SERVER_ERROR);
         }
         return responseObject;
+    }
+
+    // utility method
+    private String checkIsMultiple(int number) throws Exception{
+        if(number<0) throw new Exception("number cannot be negative");
+        String result = number+"";
+        if(number % 3 == 0 && number % 5 == 0) result="FizzBuzz";
+        else if(number % 3 == 0) result="Fizz";
+        else if(number % 5 == 0) result="Buzz";
+        return result;
     }
 }

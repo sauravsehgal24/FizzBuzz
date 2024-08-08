@@ -7,12 +7,16 @@ import static org.junit.jupiter.api.Assertions.fail;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -103,4 +107,25 @@ public class FizzBuzzServiceTest {
         // assert
         assertEquals(expectedNum, actualNum);
     }
+
+    @ParameterizedTest
+    @CsvSource({
+        "15, FizzBuzz",
+        "9, Fizz",
+        "5, Buzz",
+        "23, 23",
+        "-1, number cannot be negative"
+    })
+    @DisplayName("_checkIsMultipleTest -> assert if checkIsMultiple() is returning correct string result")
+	void _checkIsMultipleTest(int number, String expectedResult) throws Exception{
+        Class<FizzBuzzService> _class = FizzBuzzService.class;
+        Method checkIsMultiple = _class.getDeclaredMethod("checkIsMultiple", int.class);
+        checkIsMultiple.setAccessible(true);
+        try{
+            String actualResult = (String) checkIsMultiple.invoke(fizzBuzzService, number);
+            assertEquals(expectedResult, actualResult);
+        }catch(Exception e){
+            assertEquals(expectedResult, e.getCause().getMessage());
+        }
+	}
 }
